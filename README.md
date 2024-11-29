@@ -2,10 +2,10 @@
 Code pour l'opérateur du dernier laboratoire de ift7008. Il sert à l'introduction au développement et déploiement d'operateur.
 
 ## Description
-Repository pour le laboratoire sur les operators Kubernetes du cours ift-7008. L'opérateur va créer un deployment et un service. Cette opérateur est très simple et ne représente pas une bonne utilisation du Operator pattern de Kubernetes. Créer un opérateur est utile quand il est nécessaire d'ajouter des fonctionnalités à Kubernetives ou pour le déploiement d'application complexe.
+Repository pour le laboratoire sur les Operators Kubernetes du cours IFT-7008. Cet Operator crée un Deployment et un Service. Il s'agit d'un exemple très simple qui ne représente pas une bonne utilisation du Operator Pattern de Kubernetes. Créer un Operator est utile lorsqu'il est nécessaire d'ajouter des fonctionnalités à Kubernetes ou de faciliter le déploiement d'applications complexes
 ### prérequis
 - installer go (https://go.dev/doc/install)
-- operator-sdk (https://master.sdk.operatorframework.io/docs/installation/)
+- installer operator-sdk (https://master.sdk.operatorframework.io/docs/installation/)
 ### étape pour faire le laboratoire
 1. Créer un cluster kind
 ```sh
@@ -33,12 +33,12 @@ Après avoir créer votre controller, il y aura un `fichier internal/controller/
 make generate
 make manifests
 ```
-make manifests va créer les fichiers manifests présents dans le répertoire `config/`. Les annotations kubebuilder dans le fichier `traveller_controller.go` spécifie les configurations nécessaires pour créer ces fichiers. Nous avons ajouté deux annotations.
+`make manifests` va créer les fichiers présents dans le répertoire `config/`. Les annotations kubebuilder dans le fichier `traveller_controller.go` spécifie les configurations nécessaires pour créer ces fichiers. Nous avons ajouté deux annotations.
 ```
 // +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
 // +kubebuilder:rbac:groups="",resources=services,verbs=get;list;watch;create;update;patch;delete
 ```
-Puisque l'opérateur doit créer une Deployment et un Service, il faut ajouter les droits d'accès et de creation pour ces ressources.
+Puisque l'opérateur doit créer un Deployment et un Service, il faut ajouter les droits d'accès et de creation pour ces ressources.
 5. Build l'image de l'opérateur
 ```sh
 make bundle IMG="<some-registry>/lab8-operator:v0.0.1"
@@ -54,7 +54,7 @@ make deploy
 kubectl get all -n <Nom du namespace qui a été créé>
 // ajouter la custom resource
 kubectl apply -f config/samples/traveller_v1_traveller.yaml
-// vérifier que l'opérateur à eu le comportement désiré.
+// vérifier que l'opérateur a eu le comportement désiré.
 kubectl get svc
 kubectl get deployment
 ```
