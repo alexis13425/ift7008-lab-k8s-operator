@@ -1,8 +1,8 @@
 # lab8
-// TODO(user): Add simple overview of use/purpose
+Code pour l'opérateur du dernier laboratoire de ift7008. Il sert à l'introduction au développement et déploiement d'operateur.
 
 ## Description
-Repository pour le laboratoire sur les operators Kubernetes du cours ift-7008.
+Repository pour le laboratoire sur les operators Kubernetes du cours ift-7008. L'opérateur va créer un deployment et un service. Cette opérateur est très simple et ne représente pas une bonne utilisation du Operator pattern de Kubernetes. Créer un opérateur est utile quand il est nécessaire d'ajouter des fonctionnalités à Kubernetives ou pour le déploiement d'application complexe.
 ### prérequis
 - installer go (https://go.dev/doc/install)
 - operator-sdk (https://master.sdk.operatorframework.io/docs/installation/)
