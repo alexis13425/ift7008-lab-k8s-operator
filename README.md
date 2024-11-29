@@ -2,7 +2,62 @@
 // TODO(user): Add simple overview of use/purpose
 
 ## Description
-// TODO(user): An in-depth paragraph about your project and overview of use
+Repository pour le laboratoire sur les operators Kubernetes du cours ift-7008.
+### prérequis
+- installer go (https://go.dev/doc/install)
+- operator-sdk (https://master.sdk.operatorframework.io/docs/installation/)
+### étape pour faire le laboratoire
+1. Créer un cluster kind
+```sh
+kind create cluster
+```
+2. Initialiser le projet grâce à l'outil operator-sdk
+```sh
+mkdir lab8
+cd lab8
+// initialiser le framework de notre operator
+operator-sdk init --domain=example.com --repo=github.com/example-inc/lab8-operator
+// installer les dépendances nécessaire pour le laboratoire
+go mod tidy
+go mod vendor
+```
+3. Initialisation du controller pour l'opérateur. La CustomResource aura le nom de Traveller
+```sh
+operator-sdk create api --group traveller --version v1 --kind Traveller --resource --controller
+```
+L'ajout de --group traveller changera la version de l'api pour `group.domain/version`. Dans le laboratoire, l'api version sera `traveller.example.com/v1`
+Après avoir créer votre controller, il y aura un `fichier internal/controller/traveller_controller.go`. Il faudra ajouter les fichiers `traveller_controller.go`, `service.go` et `deployment.go` ce trouvant dans le répertoire `internal/controller` de ce repo github.
+
+4. Générer les fichier manifests de l'opérateur.
+```sh
+make generate
+make manifests
+```
+make manifests va créer les fichiers manifests présents dans le répertoire `config/`. Les annotations kubebuilder dans le fichier `traveller_controller.go` spécifie les configurations nécessaires pour créer ces fichiers. Nous avons ajouté deux annotations.
+```
+// +kubebuilder:rbac:groups=apps,resources=deployments,verbs=get;list;watch;create;update;patch;delete
+// +kubebuilder:rbac:groups="",resources=services,verbs=get;list;watch;create;update;patch;delete
+```
+Puisque l'opérateur doit créer une Deployment et un Service, il faut ajouter les droits d'accès et de creation pour ces ressources.
+5. Build l'image de l'opérateur
+```sh
+make bundle IMG="<some-registry>/lab8-operator:v0.0.1"
+make docker-build docker-push IMG="<some-registry>/lab8-operator:v0.0.1"
+
+// modifier l'image du manifest du controller pour l'image qui vient d'être créé.
+nano config/manager/manager.yaml
+```
+6. Déployer l'opérateur ainsi que la custom resource.
+```sh
+make deploy
+// vérifier que le déploiement a fonctionné.
+kubectl get all -n <Nom du namespace qui a été créé>
+// ajouter la custom resource
+kubectl apply -f config/samples/traveller_v1_traveller.yaml
+// vérifier que l'opérateur à eu le comportement désiré.
+kubectl get svc
+kubectl get deployment
+```
 
 ## Getting Started
 
@@ -14,10 +69,10 @@
 
 ### To Deploy on the cluster
 **Build and push your image to the location specified by `IMG`:**
-
 ```sh
 make docker-build docker-push IMG=<some-registry>/lab8:tag
 ```
+
 
 **NOTE:** This image ought to be published in the personal registry you specified.
 And it is required to have access to pull the image from the working environment.
