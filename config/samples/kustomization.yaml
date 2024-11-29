@@ -1,0 +1,4 @@
+## Append samples of your project ##
+resources:
+- traveller_v1_traveller.yaml
+# +kubebuilder:scaffold:manifestskustomizesamples

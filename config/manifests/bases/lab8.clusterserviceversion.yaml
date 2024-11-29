@@ -1,0 +1,48 @@
+apiVersion: operators.coreos.com/v1alpha1
+kind: ClusterServiceVersion
+metadata:
+  annotations:
+    alm-examples: '[]'
+    capabilities: Basic Install
+  name: lab8.v0.0.0
+  namespace: placeholder
+spec:
+  apiservicedefinitions: {}
+  customresourcedefinitions:
+    owned:
+    - description: Traveller is the Schema for the travellers API
+      displayName: Traveller
+      kind: Traveller
+      name: travellers.traveller.example.com
+      version: v1
+  description: demo the lab on kubernetes operator
+  displayName: operator-lab
+  icon:
+  - base64data: ""
+    mediatype: ""
+  install:
+    spec:
+      deployments: null
+    strategy: ""
+  installModes:
+  - supported: false
+    type: OwnNamespace
+  - supported: false
+    type: SingleNamespace
+  - supported: false
+    type: MultiNamespace
+  - supported: true
+    type: AllNamespaces
+  keywords:
+  - demo
+  - test
+  links:
+  - name: Lab8
+    url: https://lab8.domain
+  maintainers:
+  - email: email
+    name: alexis
+  maturity: alpha
+  provider:
+    name: alexis
+  version: 0.0.0
